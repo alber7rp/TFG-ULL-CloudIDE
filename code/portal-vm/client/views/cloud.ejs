@@ -1,0 +1,143 @@
+<html>
+
+<head>
+  <title><%= motivo %> - ULL-CloudIDE</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link rel="shortcut icon" href="images/cloud.png" type="image/png">
+
+</head>
+
+
+<style>
+body {
+    font-family: "Lato", sans-serif;
+}
+
+#che{
+  margin: 0px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.user-view{
+background-image: url("images/cir.jpg");
+height : 30%;
+background-size: 300px 200px;
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav a {font-size: 18px;}
+}
+
+.iconopersona{
+width : 35%;
+height : 35%;
+margin-top : 25%;
+}
+
+.logout{
+margin-top : 100%;
+}
+
+</style>
+
+
+
+<div id="mySidenav" class="sidenav">
+    <ul id="slide-out" >
+    <li><div class="user-view">
+
+      <a><img class="circle iconopersona" src="images/persona.png"></a>
+      <a><span class="white-text name"><%= user %></span></a>
+    </div></li>
+    <li><a href="/cloud/<%= motivo %>"><i class="material-icons">cloud</i> <%= motivo %></a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="/controlpanel"><i class="material-icons">developer_board</i> Control Panel</a></li>
+    <li><a class="waves-effect logout" href="/logout"><i class="material-icons">power_settings_new</i> Logout</a></li>
+  </ul>
+
+</div>
+
+
+<div id="main">
+  <img style="cursor:pointer;position:absolute;z-index:1000; top:70%; height:120px;width:180px;" id="iconnav" onclick="opencloseNav()" src="images/cloudderecha.png"></img>
+  <iframe name="window" src="http://<%= ip_server_che %>:<%= port_server_che %>/" width="100%" height="100%" scrolling="yes" frameborder="0" id="che"></iframe>
+</div>
+
+
+
+<script>
+var openclose = false;
+function opencloseNav(){
+  if(openclose == false){
+    openNav();
+    openclose = true;
+  }
+  else{
+    closeNav();
+    openclose = false;
+  }
+}
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.getElementById('iconnav').src = "images/cloudizquierda.png";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    document.getElementById('iconnav').src = "images/cloudderecha.png";
+}
+</script>
+
+<style>
+
+</style>
+</html>

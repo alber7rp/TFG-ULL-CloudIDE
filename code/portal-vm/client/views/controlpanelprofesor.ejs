@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ControlPanel - ULL-CloudIDE</title>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="images/cloud.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script> var socket = io.connect("http://<%= ip_server_che %>:8081/"); </script>
+  <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" type="text/css" href="css/csscontrolpanelprofesor.css">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse" >
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/controlpanel"><img style="height:50px; width:60px; margin-top:-15px; " src="images/cloud.png"></img></a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a><span class="glyphicon glyphicon-user"></span> <%= user %></a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+
+
+
+<!------ Include the above in your HEAD tag ---------->
+
+<h1 id="titulo">
+  <span class="typewrite" style="font-family: 'Orbitron', sans-serif;" data-period="2000" data-type='[ "ULL-CloudIDE", "Control Panel"]'>
+    <span class="wrap"></span>
+  </span>
+</h1>
+
+
+
+
+
+<div class="container" style="margin-bottom:100px;">
+	<div class="row">
+        <div class="col-lg-11 col-md-11  bhoechie-tab-container">
+            <div class="col-md-2 bhoechie-tab-menu">
+              <div class="list-group">
+                <a href="#" class="list-group-item active text-center">
+                  <h4 class="glyphicon glyphicon-tags"></h4><br/>Servicios Asignados
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="glyphicon glyphicon-tasks"></h4><br/>Mis Servicios
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="glyphicon glyphicon-plus-sign"></h4><br/>Añadir Servicios
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+                <!-- flight section -->
+                <div class="bhoechie-tab-content active">
+                    <center>
+                      <% for(var i=0; i<encendidos.length; i++) {%>
+                         <div class="col-md-12 asignacion">
+                           <div class="col-md-3">
+                            <div class="col-md-12"><img class="iconocomputer" src="images/imac.png"> </img></div>
+                            <div class="col-md-12"><span style="font-weight: bold; font-size:20px"> <%= encendidos[i].motivo %> </span></div>
+                           </div>
+                           <div class="col-md-6" style="margin-top: 20px">
+                     			  <button id="botonencender-<%= encendidos[i].motivo %>" onclick='encender(this.id)' style="display:none; background-image: url(images/off.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                     			  <button id="botonapagar-<%= encendidos[i].motivo %>" onclick='apagar(this.id)'style="background-image: url(images/on.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                            <div id="progressencender-<%= encendidos[i].motivo %>" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px;  display:none" > <h5 style="margin-top:20px">Encendiendo Servidor...</h5>
+                            </div>
+                            <div id="progressapagar-<%= encendidos[i].motivo %>" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px; display:none" > <h5 style="margin-top:20px">Apagando Servidor...</h5>
+                            </div>
+                          </div>
+                          <div class="col-md-3" style="margin-top: 15px">
+                            <div id="botonenlace-<%= encendidos[i].motivo %>" class="col-md-12"><a target="_blank" href="/cloud/<%= encendidos[i].motivo %>"><img style="width:100px; height:100px" src="images/go.png"> </img></a></div>
+                            <div class="col-md-12" id="x-<%= encendidos[i].motivo %>" style="display:none;"><img style="width:70px; height:70px" src="images/x.png"> </img></div>
+
+                          </div>
+                   			</div>
+                        <div  class="col-md-12"><hr/></div>
+                      <% } %>
+
+                      <% for(var i=0; i<apagandose.length; i++) {%>
+                         <div class="col-md-12 asignacion">
+                           <div class="col-md-3">
+                            <div class="col-md-12"><img class="iconocomputer" src="images/imac.png"> </img></div>
+                            <div class="col-md-12"><span style="font-weight: bold; font-size:20px"> <%= apagandose[i].motivo %> </span></div>
+                           </div>
+                           <div class="col-md-6" style="margin-top: 20px">
+                             <button id="botonencender-<%= apagandose[i].motivo %>" onclick='encender(this.id)' style="display:none; background-image: url(images/off.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                             <button id="botonapagar-<%= apagandose[i].motivo %>" onclick='apagar(this.id)'style="display:none; background-image: url(images/on.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                             <div id="progressencender-<%= apagandose[i].motivo %>" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px;  display:none" > <h5 style="margin-top:20px">Encendiendo Servidor...</h5>
+                             </div>
+                             <div id="progressapagar-<%= apagandose[i].motivo %>" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px;" > <h5 style="margin-top:20px">Apagando Servidor...</h5>
+                             </div>
+                          </div>
+                          <div class="col-md-3" style="margin-top: 15px">
+                            <div id="botonenlace-<%= apagandose[i].motivo %>" class="col-md-12"><a  target="_blank" href="/cloud/<%= apagandose[i].motivo %>"><img style="width:100px; height:100px" src="images/go.png"> </img></a></div>
+                            <div class="col-md-12" id="x-<%= apagandose[i].motivo %>" style="display:none;"><img style="width:70px; height:70px" src="images/x.png"> </img></div>
+
+                          </div>
+                   			</div>
+                        <div  class="col-md-12"><hr/></div>
+                      <% } %>
+
+                      <% for(var i=0; i<encendiendose.length; i++) {%>
+                         <div class="col-md-12 asignacion">
+                           <div class="col-md-3">
+                            <div class="col-md-12"><img class="iconocomputer" src="images/imac.png"> </img></div>
+                            <div class="col-md-12"><span style="font-weight: bold; font-size:20px"> <%= encendiendose[i].motivo %> </span></div>
+                           </div>
+                           <div class="col-md-6" style="margin-top: 20px">
+                             <button id="botonencender-<%= encendiendose[i].motivo %>" onclick='encender(this.id)' style="display:none; background-image: url(images/off.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                             <button id="botonapagar-<%= encendiendose[i].motivo %>" onclick='apagar(this.id)'style="display:none; background-image: url(images/on.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                             <div id="progressencender-<%= encendiendose[i].motivo %>" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px;  " > <h5 style="margin-top:20px">Encendiendo Servidor...</h5>
+                             </div>
+                             <div id="progressapagar-<%= encendiendose[i].motivo %>" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px; display:none" > <h5 style="margin-top:20px">Apagando Servidor...</h5>
+                             </div>
+                          </div>
+                          <div class="col-md-3" style="margin-top: 15px">
+                            <div id="botonenlace-<%= encendiendose[i].motivo %>" style="display:none" class="col-md-12"><a  target="_blank" href="/cloud/<%= encendiendose[i].motivo %>"><img style="width:100px; height:100px" src="images/go.png"> </img></a></div>
+                            <div class="col-md-12" id="x-<%= encendiendose[i].motivo %>"><img style="width:70px; height:70px" src="images/x.png"> </img></div>
+
+
+                          </div>
+                   			</div>
+                        <div  class="col-md-12"><hr/></div>
+                      <% } %>
+
+                      <% for(var i=0; i<resto.length; i++) {%>
+                         <div class="col-md-12 asignacion">
+                           <div class="col-md-3">
+                            <div class="col-md-12"><img class="iconocomputer" src="images/imac.png"> </img></div>
+                            <div class="col-md-12"><span style="font-weight: bold; font-size:20px"> <%= resto[i].motivo %> </span></div>
+                           </div>
+                           <div class="col-md-6" style="margin-top: 20px">
+                             <button id="botonencender-<%= resto[i].motivo %>" onclick='encender(this.id)' style=" background-image: url(images/off.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                             <button id="botonapagar-<%= resto[i].motivo %>" onclick='apagar(this.id)'style="display:none; background-image: url(images/on.png); background-repeat: no-repeat; background-size: 70px 60px; background-color: transparent; border: none; width:70px; height:60px"> </button>
+                             <div id="progressencender-<%= resto[i].motivo %>" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px;  display:none" > <h5 style="margin-top:20px">Encendiendo Servidor...</h5>
+                             </div>
+                             <div id="progressapagar-<%= resto[i].motivo %>" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%; height:50px; border-radius: 20px 10px; display:none" > <h5 style="margin-top:20px">Apagando Servidor...</h5>
+                             </div>
+                          </div>
+                          <div class="col-md-3" style="margin-top: 15px">
+                            <div id="botonenlace-<%= resto[i].motivo %>" style="display:none" class="col-md-12"><a  target="_blank" href="/cloud/<%= resto[i].motivo %>"><img style="width:100px; height:100px" src="images/go.png"> </img></a></div>
+                            <div class="col-md-12" id="x-<%= resto[i].motivo %>"><img style="width:70px; height:70px" src="images/x.png"> </img></div>
+
+
+                          </div>
+                   			</div>
+                        <div  class="col-md-12"><hr/></div>
+                      <% } %>
+                    </center>
+                </div>
+
+                <div class="bhoechie-tab-content">
+                    <center>
+
+                      <div class="panel-group" id="accordion">
+
+                        <% for(var i=0; i<servicios.length; i++) {%>
+                          <div class="panel panel-default">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= servicios[i].motivo %>" style="text-decoration: none;">
+                            <div class="panel-heading panel-heading-principal">
+                              <h3 class="panel-title glyphicon glyphicon-tasks" style="color:#6a1b9a; font-weight:bold">
+                                   <span style="color:black; font-size:20px;"><%= servicios[i].motivo %></span>
+                              </h3>
+                            </div>
+                            </a>
+                            <div id="collapse-<%= servicios[i].motivo %>" class="panel-collapse collapse ">
+                              <div class="panel-body">
+
+
+
+
+
+
+
+
+
+                              <div class="panel-group" id="accordion<%= i %>">
+
+
+                                <div class="panel panel-default">
+                                  <a data-toggle="collapse" data-parent="#accordion<%= i %>" href="#collapse0-<%= servicios[i].motivo %>" style="text-decoration: none;">
+                                  <div class="panel-heading panel-heading-secundario-listar">
+                                    <h4 class="panel-title glyphicon glyphicon-list-alt" style="color:white; font-weight:bold">
+                                         <span style="color:white; font-size:14px;">Listar usuarios</span> <label class="glyphicon glyphicon-user">
+                                    </h4>
+                                  </div>
+                                  </a>
+                                  <div id="collapse0-<%= servicios[i].motivo %>" class="panel-collapse collapse">
+                                    <div class="panel-body">
+
+                                      <div class="col-md-12" style="max-height:350px; overflow-y:scroll;">
+                                        <table class="table table-hover">
+                                          <thead style="background-color:black; color:white">
+                                            <tr>
+                                              <th scope="col"><center>#</center></th>
+                                              <th scope="col"><center>Usuario</center></th>
+                                              <th scope="col"><center>Estado</center></th>
+                                              <th scope="col"><center>Últ. Conexión</center></th>
+                                            </tr>
+                                          </thead>
+                                          <tbody >
+                                            <% for(var j=0; j<servicios[i].usuarios.length; j++) {%>
+                                              <tr>
+                                                <th scope="row"><center><%= j %></center></th>
+                                                <td><center><%= servicios[i].usuarios[j].usuario %></center></td>
+                                                <% if(servicios[i].usuarios[j].estado == "up") {%>
+                                                  <td><center><label class="glyphicon glyphicon-arrow-up" style="color: green"></center></td>
+                                                <% } else {%>
+                                                  <td><center><label class="glyphicon glyphicon-arrow-down" style="color: red"></center></td>
+                                                <% }%>
+                                                <td><center><%= servicios[i].usuarios[j].fecha %></center></td>
+                                              </tr>
+                                            <% } %>
+                                          </tbody>
+                                        </table>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <div class="panel panel-default">
+                                  <a data-toggle="collapse" data-parent="#accordion<%= i %>" href="#collapse1-<%= servicios[i].motivo %>" style="text-decoration: none;">
+                                  <div class="panel-heading panel-heading-secundario-aniadir">
+                                    <h4 class="panel-title glyphicon glyphicon-plus" style="color: white; font-weight:bold">
+                                         <span style="color:white; font-size:14px;">Añadir usuarios </span><label class="glyphicon glyphicon-user">
+                                    </h4>
+                                  </div>
+                                  </a>
+                                  <div id="collapse1-<%= servicios[i].motivo %>" class="panel-collapse collapse">
+                                    <div class="panel-body">
+
+                                      <form action="/aniadirusuarios" id="idform-<%= servicios[i].motivo %>" method="post" >
+
+                                        <div class="col-md-12">
+                                          <input type="hidden" id="nombreservicio-<%= servicios[i].motivo %>" type="text" name="nombreservicio" value="<%= servicios[i].motivo %>" >
+                                        </div>
+                                        <div class="col-md-12" style=" margin-top:30px; margin-bottom:30px">
+                                          <div class="col-md-8"><h5 style="font-weight:bold" class="col-md-12" > Insertar emails </h5><textarea style="resize:none;border-left: 6px solid #00695c; border-radius: 7px;" id="campo-<%= servicios[i].motivo %>" class="ta" onkeyup="parsearemails(this.id)"> </textarea></div>
+                                          <div class="col-md-4"><h5 style="font-weight:bold" class="col-md-12"> Usuarios detectados : </h5><div style="border-left: 6px solid #00695c; height:200px; overflow-y: scroll;" class="col-md-12" id="emaildetected-<%= servicios[i].motivo %>"> </div></div>
+                                        </div>
+                                        <div class="col-md-12" style="margin-bottom:30px"><button id="boton-<%= servicios[i].motivo %>" class="btn btn-success" > Enviar </button></div>
+                                      </form>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="panel panel-default">
+                                  <a data-toggle="collapse" data-parent="#accordion<%= i %>" href="#collapse2-<%= servicios[i].motivo %>" style="text-decoration: none;">
+                                  <div class="panel-heading panel-heading-secundario-eliminar">
+                                    <h4 class="panel-title glyphicon glyphicon-trash" style="color:white; font-weight:bold">
+                                         <span style="color:white; font-size:14px;">Eliminar usuarios</span> <label class="glyphicon glyphicon-user">
+                                    </h4>
+                                  </div>
+                                  </a>
+                                  <div id="collapse2-<%= servicios[i].motivo %>" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                      <form action="/eliminarusuarios"  id="formularioeliminarusuarios-<%= servicios[i].motivo %>" method="post" >
+
+                                        <div class="col-md-12">
+                                          <input type="hidden" id="nombreservicio-<%= servicios[i].motivo %>" type="text" name="nombreservicio" value="<%= servicios[i].motivo %>" >
+                                        </div>
+                                        <div class="col-md-12" style=" margin-top:30px; margin-bottom:30px; ">
+                                          <div class="col-md-6 col-md-offset-3"><h5 style="font-weight:bold" class="col-md-12"> Usuarios : </h5>
+                                            <div style="border-left: 6px solid #00695c; height:200px; overflow-y: scroll;" class="col-md-12" >
+                                              <% for(var j=0; j<servicios[i].usuarios.length; j++) {%>
+                                                <div class="form-check entrada-<%= servicios[i].usuarios[j].usuario %>"><label><input type="checkbox" name="usuario" value="<%= servicios[i].usuarios[j].usuario %>"> <span class="label-text"><%= servicios[i].usuarios[j].usuario %></span></label></div>
+                                              <% } %>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-12" style="margin-bottom:30px"><buttontype="button" id="botoneliminarusuarios-<%= servicios[i].motivo %>" class="btn btn-success" onclick="preguntaeliminarusuarios(this.id)"> Enviar </button></div>
+                                      </form>
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div>
+                            <form action="/eliminarservicio"  id="formularioeliminarservicio-<%= servicios[i].motivo %>" method="post" >
+
+                              <div class="col-md-12">
+                                <input type="hidden" id="nombreservicio-<%= servicios[i].motivo %>" type="text" name="nombreservicio" value="<%= servicios[i].motivo %>" >
+                              </div>
+                              <div class="col-md-12" style="margin-bottom:30px"><button type="button" id="botoneliminarservicio-<%= servicios[i].motivo %>" class="btn btn-danger" onclick="preguntaeliminarservicio(this.id)"> Eliminar servicio </button></div>
+                            </form>
+                          </div>
+
+                            </div>
+                            </div>
+                          </div>
+                        <% } %>
+
+
+                      </div>
+
+                    </center>
+                </div>
+
+                <!-- hotel search -->
+                <div class="bhoechie-tab-content">
+                    <center>
+                      <form action="/nuevoservicio" id="idform-insertarnuevo" method="post" >
+
+                        <div class="col-md-12">
+                          <input class="col-md-3 col-md-offset-3" style="border-left: 6px solid #00695c; border-radius: 7px;" onkeyup="comprobardisponibilidadnombre(this.id)" id="nombreservicio-insertarnuevo" type="text" name="nombreservicio" placeholder="Nombre del servicio">
+                          <div class="col-md-6" id="nombrevalido-insertarnuevo" style="display:none" ><img style="height:20px; width:20px" src="images/valido.png"><span> Nombre del servicio válido </span></div>
+                          <div class="col-md-6" id="nombrenovalido-insertarnuevo" style="display:none" ><img style="height:20px; width:20px" src="images/novalido.png"><span> Nombre del servicio no válido </span></div>
+                        </div>
+                        <div class="col-md-12" style=" margin-top:30px; margin-bottom:30px">
+                          <div class="col-md-8"><h5 style="font-weight:bold" class="col-md-12" > Insertar emails </h5><textarea style="resize:none;border-left: 6px solid #00695c; border-radius: 7px;" id="campo-insertarnuevo" class="ta" onkeyup="parsearemails(this.id)"> </textarea></div>
+                          <div class="col-md-4"><h5 style="font-weight:bold" class="col-md-12"> Usuarios detectados : </h5><div style="border-left: 6px solid #00695c; height:200px; overflow-y: scroll;" class="col-md-12" id="emaildetected-insertarnuevo"> </div></div>
+                        </div>
+                        <div class="col-md-12" style="margin-bottom:30px"><button id="boton-insertarnuevo" class="btn btn-success" disabled> Añadir nuevo servicio </button></div>
+                      </form>
+                    </center>
+                </div>
+
+            </div>
+        </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Error</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+              <p id="error">This is a small modal.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+</body>
+
+<script src="js/jscontrolpanelprofesor.js"></script>
+
+</html>

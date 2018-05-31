@@ -1,0 +1,16 @@
+{
+  "ip_server_interior" : "10.6.134.50",
+  "ip_server_exterior" : "cloudide.iaas.ull.es",
+  "puerto_websocket_vms" : 4000,
+  "host_bbdd_mysql" : "10.6.134.50",
+  "user_bbdd_mysql" : "***",
+  "password_bbdd_mysql" : "***",
+  "database_bbdd_mysql" : "cloudIDE",
+  "tiempo_actualizacion" : 12000,
+  "numero_max_users" : 2,
+  "numero_max_serverxuser" : 3,
+  "puerto_inicial" : 8082,
+  "rootpassword" : "***",
+  "path_almacenamiento" : "/mnt/cloudIDE/",
+  "path" : "/home/usuario/client/"
+}
