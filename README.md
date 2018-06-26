@@ -10,7 +10,7 @@ Por otro lado, se ha hecho uso del servidor CAS alojado en las instalaciones int
 
 Como se ha nombrado, en la plataforma coexisten dos roles:
 * **Profesores**: Éstos podrán crear nuevos servicios, asignarlos a los usuarios que crea convenientes, eliminarlos, etc. Un profesor también puede ser alumno, por ello también podrán acceder a aquellos IDEs que le hayan asignado.
-* **Alumnos**: Éstos se limitarán al encendidom apagado y acceso de los IDEs asignados por sus profesores.
+* **Alumnos**: Éstos se limitarán al encendido, apagado y acceso de los IDEs asignados por sus profesores.
 
 ![](/img/screenshot.png)
 
