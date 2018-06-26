@@ -1,5 +1,5 @@
 # **ULL-CloudIDE** : Plataforma de entornos de desarrollo para la docencia
-<div style="text-align:center"><img src ="/img/logo.png" /></div>
+![](/img/logo.png)
 ___
 ### **¿En qué consiste esta plataforma?**
 En este proyecto, se ha desarrollado e implantado un sistema que permite tanto a profesores como alumnos de la Universidad de La Laguna, hacer uso de entornos de desarrollo integrado en la nube. Éste objetivo viene producido por la necesidad de facilitar la creación y el testeo de proyectos informáticos en el ámbito docente.
