@@ -8,3 +8,5 @@ echo "auto eth0" >> /etc/network/interfaces
 echo "iface eth0 inet static" >> /etc/network/interfaces
 echo "address "$2 >> /etc/network/interfaces
 echo "netmask 255.255.255.0" >> /etc/network/interfaces
+echo "gateway 10.6.134.50" >> /etc/network/interfaces
+
